@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package>
+  <name>dynamixel_workbench_ros_control</name>
+  <version>0.0.1</version>
+  <description>HW interface based on dynamixel_workbench</description>
+
+
+  <maintainer email="ros@martinoehler.de">Martin Oehler</maintainer>
+
+  <license>MIT</license>
+
+  <author email="ros@martinoehler.de">Martin Oehler</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>dynamixel_workbench_toolbox</build_depend>
+  <build_depend>hardware_interface</build_depend>
+  <build_depend>roscpp</build_depend>
+  <run_depend>dynamixel_workbench_toolbox</run_depend>
+  <run_depend>hardware_interface</run_depend>
+  <run_depend>roscpp</run_depend>
+
+  <export>
+  </export>
+</package>

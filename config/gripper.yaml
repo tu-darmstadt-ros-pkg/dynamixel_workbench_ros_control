@@ -1,0 +1,16 @@
+dynamixel_config:
+  port_info:
+    port_name: /dev/ttyUSB0
+    baudrate: 3000000
+    protocol_version: 2
+  device_info:
+    manipulator_arm_link_0:
+      id: 0
+      model_number: 1030
+    gripper_finger_link_0:
+      id: 1
+      model_number: 1020
+
+  
+      
+  
