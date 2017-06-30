@@ -35,6 +35,14 @@ private:
 
   std::vector<std::string> joint_names_;
 
+  std::vector<transmission_interface::SimpleTransmission> transmission_;
+  std::vector<transmission_interface::ActuatorData> a_state_;
+  std::vector<transmission_interface::ActuatorData> a_goal_;
+
+  std::vector<transmission_interface::JointData> j_state_;
+  std::vector<transmission_interface::JointData> j_goal_;
+
+
   std::vector<double> goal_position_;
   std::vector<double> goal_effort_;
   std::vector<double> goal_velocity_;

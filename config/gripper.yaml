@@ -7,9 +7,13 @@ dynamixels:
     manipulator_arm_joint_0:
       id: 0
       model_number: 1030
+      transmission: 1
+      offset: 0
     gripper_finger_joint_0:
       id: 1
       model_number: 1020
+      transmission: 0.33
+      offset: 0
 
   
       
