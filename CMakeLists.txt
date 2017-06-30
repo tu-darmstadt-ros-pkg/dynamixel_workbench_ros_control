@@ -140,9 +140,9 @@ target_link_libraries(dynamixel_workbench_ros_control
   ${catkin_LIBRARIES}
 )
 
-add_executable(dynamixel_ros_control_node src/dynamixel_ros_control_node.cpp)
-add_dependencies(dynamixel_ros_control_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(dynamixel_ros_control_node dynamixel_workbench_ros_control)
+add_executable(dynamixel_controller_manager_node src/dynamixel_controller_manager_node.cpp)
+add_dependencies(dynamixel_controller_manager_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(dynamixel_controller_manager_node dynamixel_workbench_ros_control)
 
 #############
 ## Install ##
