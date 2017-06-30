@@ -24,12 +24,13 @@ private:
   bool loadDynamixels(ros::NodeHandle& nh);
   void setTorque(bool enabled);
 
-  double convertValue2Radian(uint32_t value);
-
   boost::shared_ptr<dynamixel_multi_driver::DynamixelMultiDriver> driver_;
 
   hardware_interface::JointStateInterface jnt_state_interface;
   hardware_interface::PositionJointInterface jnt_pos_interface;
+
+  int joint_count_;
+
   std::vector<std::string> joint_names_;
 
   std::vector<double> goal_position_;
