@@ -41,6 +41,19 @@ bool DynamixelHardwareInterface::init() {
   registerInterface(&jnt_pos_interface);
 
   setTorque(true);
+
+//  transmission_interface::ActuatorData a_data;
+//  a_data.position.push_back(&a_pos);
+
+//  transmission_interface::JointData j_data;
+//  j_data.position.push_back(&j_pos);
+
+//  // Transmission interface
+//  transmission_interface::ActuatorToJointStateInterface act_to_jnt_pos;
+//  act_to_jnt_pos.registerHandle(ActuatorToJointPositionHandle("trans", &trans, a_data, j_data));
+
+//  // Propagate actuator position to joint space
+//  act_to_jnt_pos.propagate();
 }
 
 bool DynamixelHardwareInterface::loadDynamixels(ros::NodeHandle& nh) {

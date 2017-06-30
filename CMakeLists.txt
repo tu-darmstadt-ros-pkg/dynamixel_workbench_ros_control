@@ -7,6 +7,7 @@ project(dynamixel_workbench_ros_control)
 find_package(catkin REQUIRED COMPONENTS
   dynamixel_workbench_toolbox
   hardware_interface
+  controller_manager
   roscpp
 )
 
@@ -113,7 +114,7 @@ set(SOURCES
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES dynamixel_workbench_ros_control
-  CATKIN_DEPENDS dynamixel_workbench_toolbox hardware_interface roscpp
+  CATKIN_DEPENDS dynamixel_workbench_toolbox hardware_interface controller_manager roscpp
   DEPENDS system_lib
 )
 
@@ -128,31 +129,20 @@ include_directories(
   include
   ${catkin_INCLUDE_DIRS}
 )
-
-## Declare a C++ library
- add_library(dynamixel_workbench_ros_control
-   ${HEADERS} ${SOURCES}
- )
-
-## Add cmake target dependencies of the library
-## as an example, code may need to be generated before libraries
-## either from message generation or dynamic reconfigure
+add_library(dynamixel_workbench_ros_control
+ ${HEADERS} ${SOURCES}
+)
 add_dependencies(dynamixel_workbench_ros_control 
   ${${PROJECT_NAME}_EXPORTED_TARGETS} 
   ${catkin_EXPORTED_TARGETS}
 )
-
-## Declare a C++ executable
-# add_executable(dynamixel_workbench_ros_control_node src/dynamixel_workbench_ros_control_node.cpp)
-
-## Add cmake target dependencies of the executable
-## same as for the library above
-# add_dependencies(dynamixel_workbench_ros_control_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-## Specify libraries to link a library or executable target against
 target_link_libraries(dynamixel_workbench_ros_control
   ${catkin_LIBRARIES}
 )
+
+add_executable(dynamixel_ros_control_node src/dynamixel_ros_control_node.cpp)
+add_dependencies(dynamixel_ros_control_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(dynamixel_ros_control_node dynamixel_workbench_ros_control)
 
 #############
 ## Install ##

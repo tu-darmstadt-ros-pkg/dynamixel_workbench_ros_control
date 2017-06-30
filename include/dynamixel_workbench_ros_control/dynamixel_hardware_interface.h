@@ -4,6 +4,8 @@
 #include <hardware_interface/joint_command_interface.h>
 #include <hardware_interface/joint_state_interface.h>
 #include <hardware_interface/robot_hw.h>
+#include <transmission_interface/simple_transmission.h>
+#include <transmission_interface/transmission_interface.h>
 
 #include <ros/ros.h>
 
