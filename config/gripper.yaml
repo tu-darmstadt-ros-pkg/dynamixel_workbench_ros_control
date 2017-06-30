@@ -1,6 +1,6 @@
 dynamixels:
   port_info:
-    port_name: /dev/ttyUSB0
+    port_name: /dev/rs485_extern
     baudrate: 3000000
     protocol_version: 2
   device_info:
