@@ -5,6 +5,7 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "dynamixel_controller_manager");
   dynamixel_workbench_ros_control::DynamixelHardwareInterface hw;
+  hw.init();
   controller_manager::ControllerManager cm(&hw);
 
   ros::NodeHandle pnh("~");
