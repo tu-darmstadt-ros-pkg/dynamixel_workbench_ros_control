@@ -13,6 +13,20 @@
 
 namespace dynamixel_workbench_ros_control {
 
+template<typename T>
+std::string vecToString(const std::vector<T>& vec) {
+  std::stringstream ss;
+  ss << "[";
+  for (unsigned int i = 0; i < vec.size(); ++i) {
+    ss << vec[i];
+    if (i != vec.size() -1) {
+      ss << ", ";
+    }
+  }
+  ss << "]";
+  return ss.str();
+}
+
 struct State {
   State() : position(0), velocity(0), effort(0) {}
   double position;
