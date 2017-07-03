@@ -4,10 +4,10 @@ dynamixels:
     baudrate: 3000000
     protocol_version: 2
   device_info:
-    manipulator_arm_joint_0:
+    gripper_roll_joint:
       id: 0
       model_number: 1030
-    gripper_finger_joint_0:
+    gripper_finger_servo_joint:
       id: 1
       model_number: 1020
 
