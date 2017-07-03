@@ -13,6 +13,19 @@
 
 namespace dynamixel_workbench_ros_control {
 
+struct State {
+  State() : position(0), velocity(0), effort(0) {}
+  double position;
+  double velocity;
+  double effort;
+};
+
+struct Joint {
+  std::string name;
+  State current;
+  State goal;
+};
+
 class DynamixelHardwareInterface : public hardware_interface::RobotHW
 {
 public:
@@ -25,6 +38,8 @@ public:
 private:
   bool loadDynamixels(ros::NodeHandle& nh);
   void setTorque(bool enabled);
+
+  bool first_cycle_;
 
   boost::shared_ptr<dynamixel_multi_driver::DynamixelMultiDriver> driver_;
 

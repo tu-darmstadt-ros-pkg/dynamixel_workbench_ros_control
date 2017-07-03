@@ -5,7 +5,10 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "dynamixel_controller_manager");
   dynamixel_workbench_ros_control::DynamixelHardwareInterface hw;
-  hw.init();
+  if (!hw.init()) {
+    ROS_ERROR_STREAM("Failed to initialize hardware interface.");
+    return 1;
+  }
   controller_manager::ControllerManager cm(&hw);
 
   ros::NodeHandle pnh("~");
@@ -13,6 +16,7 @@ int main(int argc, char** argv)
 
   ros::Time current_time = ros::Time::now();
   bool first_update = true;
+  ROS_INFO_STREAM("Starting control loop with cycle time of " << rate.cycleTime() << " s.");
   while (ros::ok())
   {
     hw.read();
@@ -21,6 +25,7 @@ int main(int argc, char** argv)
     if (first_update) {
       first_update = false;
     } else {
+      ROS_INFO_STREAM("Running controller update: Time: " << current_time << ", Period: " << period);
       cm.update(current_time, period);
     }
     hw.write();

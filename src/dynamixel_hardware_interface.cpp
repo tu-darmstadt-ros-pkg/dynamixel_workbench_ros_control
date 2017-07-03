@@ -3,7 +3,8 @@
 namespace dynamixel_workbench_ros_control {
 
 
-DynamixelHardwareInterface::DynamixelHardwareInterface() {
+DynamixelHardwareInterface::DynamixelHardwareInterface()
+  : first_cycle_(true) {
 
 
 
@@ -41,19 +42,6 @@ bool DynamixelHardwareInterface::init() {
   registerInterface(&jnt_pos_interface);
 
   setTorque(true);
-
-//  transmission_interface::ActuatorData a_data;
-//  a_data.position.push_back(&a_pos);
-
-//  transmission_interface::JointData j_data;
-//  j_data.position.push_back(&j_pos);
-
-//  // Transmission interface
-//  transmission_interface::ActuatorToJointStateInterface act_to_jnt_pos;
-//  act_to_jnt_pos.registerHandle(ActuatorToJointPositionHandle("trans", &trans, a_data, j_data));
-
-//  // Propagate actuator position to joint space
-//  act_to_jnt_pos.propagate();
 }
 
 bool DynamixelHardwareInterface::loadDynamixels(ros::NodeHandle& nh) {
@@ -93,18 +81,26 @@ bool DynamixelHardwareInterface::loadDynamixels(ros::NodeHandle& nh) {
   for (unsigned int i = 0; i < infos.size(); i++) {
     delete infos[i];
   }
+  ROS_INFO_STREAM("Finished initializing HW interface");
 }
 
 void DynamixelHardwareInterface::setTorque(bool enabled) {
+  ROS_INFO_STREAM("Enabling torque");
   std::vector<uint8_t> torque(joint_names_.size(), enabled);
   driver_->syncWriteTorque(torque);
 }
 
 void DynamixelHardwareInterface::read() {
+  ROS_INFO_STREAM("Reading joint positions");
   driver_->syncReadPosition(current_position_);
+  if (first_cycle_) {
+    goal_position_ = current_position_;
+    first_cycle_ = false;
+  }
 }
 
 void DynamixelHardwareInterface::write() {
+  ROS_INFO_STREAM("Writing joint positions");
   driver_->syncWritePosition(goal_position_);
 }
 
