@@ -4,16 +4,11 @@ namespace dynamixel_workbench_ros_control {
 
 
 DynamixelHardwareInterface::DynamixelHardwareInterface()
-  : first_cycle_(true) {
+  : first_cycle_(true) {}
 
-
-
-}
-
-bool DynamixelHardwareInterface::init() {
+bool DynamixelHardwareInterface::init(ros::NodeHandle& nh) {
   // Load dynamixel config from parameter server
-  ros::NodeHandle pnh("~");
-  if (!loadDynamixels(pnh)) {
+  if (!loadDynamixels(nh)) {
     ROS_ERROR_STREAM("Failed to ping all motors.");
     return false;
   }
@@ -42,6 +37,7 @@ bool DynamixelHardwareInterface::init() {
   registerInterface(&jnt_pos_interface);
 
   setTorque(true);
+  return true;
 }
 
 bool DynamixelHardwareInterface::loadDynamixels(ros::NodeHandle& nh) {
@@ -81,17 +77,14 @@ bool DynamixelHardwareInterface::loadDynamixels(ros::NodeHandle& nh) {
   for (unsigned int i = 0; i < infos.size(); i++) {
     delete infos[i];
   }
-  ROS_INFO_STREAM("Finished initializing HW interface");
 }
 
 void DynamixelHardwareInterface::setTorque(bool enabled) {
-  ROS_INFO_STREAM("Enabling torque");
   std::vector<uint8_t> torque(joint_names_.size(), enabled);
   driver_->syncWriteTorque(torque);
 }
 
 void DynamixelHardwareInterface::read() {
-  ROS_INFO_STREAM("Reading joint positions");
   driver_->syncReadPosition(current_position_);
   if (first_cycle_) {
     goal_position_ = current_position_;
@@ -100,7 +93,6 @@ void DynamixelHardwareInterface::read() {
 }
 
 void DynamixelHardwareInterface::write() {
-  ROS_INFO_STREAM("Writing joint positions");
   driver_->syncWritePosition(goal_position_);
 }
 
