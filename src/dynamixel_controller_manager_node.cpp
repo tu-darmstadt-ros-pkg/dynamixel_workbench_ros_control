@@ -32,6 +32,7 @@ int main(int argc, char** argv)
     }
     hw.write();
     rate.sleep();
+    ros::spinOnce();
   }
   return 0;
 }
