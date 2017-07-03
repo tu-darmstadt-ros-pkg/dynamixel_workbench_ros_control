@@ -115,7 +115,7 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES dynamixel_workbench_ros_control
   CATKIN_DEPENDS dynamixel_workbench_toolbox hardware_interface controller_manager roscpp
-  DEPENDS system_lib
+  DEPENDS #system_lib
 )
 
 ###########

@@ -6,6 +6,7 @@
 #include <hardware_interface/robot_hw.h>
 #include <transmission_interface/simple_transmission.h>
 #include <transmission_interface/transmission_interface.h>
+#include <transmission_interface/transmission_interface_loader.h>
 
 #include <ros/ros.h>
 
@@ -25,6 +26,8 @@ public:
 private:
   bool loadDynamixels(ros::NodeHandle& nh);
   void setTorque(bool enabled);
+
+  bool first_cycle_;
 
   boost::shared_ptr<dynamixel_multi_driver::DynamixelMultiDriver> driver_;
 

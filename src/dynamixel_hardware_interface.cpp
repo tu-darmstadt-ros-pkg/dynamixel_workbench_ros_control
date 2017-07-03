@@ -3,7 +3,8 @@
 namespace dynamixel_workbench_ros_control {
 
 
-DynamixelHardwareInterface::DynamixelHardwareInterface() {
+DynamixelHardwareInterface::DynamixelHardwareInterface()
+  : first_cycle_(true){
 
 
 
@@ -41,6 +42,8 @@ bool DynamixelHardwareInterface::init() {
   registerInterface(&jnt_pos_interface);
 
   setTorque(true);
+
+  transmission_interface::TransmissionInterfaceLoader
 
 //  transmission_interface::ActuatorData a_data;
 //  a_data.position.push_back(&a_pos);
@@ -102,6 +105,10 @@ void DynamixelHardwareInterface::setTorque(bool enabled) {
 
 void DynamixelHardwareInterface::read() {
   driver_->syncReadPosition(current_position_);
+  if (first_cycle_) {
+    goal_position_ = current_position_;
+    first_cycle_ = false;
+  }
 }
 
 void DynamixelHardwareInterface::write() {
