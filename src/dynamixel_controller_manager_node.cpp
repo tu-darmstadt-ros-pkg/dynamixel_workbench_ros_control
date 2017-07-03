@@ -1,4 +1,5 @@
 #include <dynamixel_workbench_ros_control/dynamixel_hardware_interface.h>
+#include <ros/callback_queue.h>
 #include <controller_manager/controller_manager.h>
 
 int main(int argc, char** argv)
@@ -15,7 +16,12 @@ int main(int argc, char** argv)
     return 1;
   }
   ROS_INFO_STREAM("Finished initializing HW interface");
-  controller_manager::ControllerManager cm(&hw);
+  ros::NodeHandle nh;
+  ros::CallbackQueue queue;
+  nh.setCallbackQueue(&queue);
+  ros::AsyncSpinner spinner(1, &queue);
+  spinner.start();
+  controller_manager::ControllerManager cm(&hw, nh);
 
   ros::Time current_time = ros::Time::now();
   bool first_update = true;
