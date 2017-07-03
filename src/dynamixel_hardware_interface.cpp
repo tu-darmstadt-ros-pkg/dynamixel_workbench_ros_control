@@ -90,8 +90,8 @@ void DynamixelHardwareInterface::read() {
     goal_position_ = current_position_;
     first_cycle_ = false;
   }
-  driver_->readMultiRegister("present_current");
-  ROS_INFO_STREAM("Current: " << vecToString(*driver_->read_value_["present_current"]));
+//  driver_->readMultiRegister("present_current");
+//  ROS_INFO_STREAM("Current: " << vecToString(*driver_->read_value_["present_current"]));
 }
 
 void DynamixelHardwareInterface::write() {
