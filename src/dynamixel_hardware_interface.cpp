@@ -41,6 +41,8 @@ bool DynamixelHardwareInterface::init(ros::NodeHandle& nh) {
 }
 
 bool DynamixelHardwareInterface::loadDynamixels(ros::NodeHandle& nh) {
+  bool success = true;
+
   ROS_INFO_STREAM("Loading parameters from namespace " << nh.getNamespace() + "/dynamixels");
 
   // get port info
@@ -73,10 +75,13 @@ bool DynamixelHardwareInterface::loadDynamixels(ros::NodeHandle& nh) {
   }
 
   // load into driver and clean up
-  driver_->loadDynamixel(infos);
+  success &= driver_->loadDynamixel(infos);
+
   for (unsigned int i = 0; i < infos.size(); i++) {
     delete infos[i];
   }
+
+  return success;
 }
 
 void DynamixelHardwareInterface::setTorque(bool enabled) {
@@ -97,5 +102,4 @@ void DynamixelHardwareInterface::read() {
 void DynamixelHardwareInterface::write() {
   driver_->syncWritePosition(goal_position_);
 }
-
 }
