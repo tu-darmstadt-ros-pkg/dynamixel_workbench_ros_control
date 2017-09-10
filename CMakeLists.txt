@@ -5,14 +5,12 @@ project(dynamixel_workbench_ros_control)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  std_msgs
   dynamixel_workbench_toolbox
   hardware_interface
   controller_manager
-  roscpp
 )
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
-
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -114,7 +112,7 @@ set(SOURCES
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES dynamixel_workbench_ros_control
-  CATKIN_DEPENDS dynamixel_workbench_toolbox hardware_interface controller_manager roscpp
+  CATKIN_DEPENDS roscpp std_msgs dynamixel_workbench_toolbox hardware_interface controller_manager
   DEPENDS system_lib
 )
 

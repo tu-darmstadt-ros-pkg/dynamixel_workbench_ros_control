@@ -1,13 +1,15 @@
 #ifndef DYNAMIXEL_HARWARE_INTERFACE_H
 #define DYNAMIXEL_HARWARE_INTERFACE_H
 
+#include <ros/ros.h>
+
+#include <std_msgs/Bool.h>
+
 #include <hardware_interface/joint_command_interface.h>
 #include <hardware_interface/joint_state_interface.h>
 #include <hardware_interface/robot_hw.h>
 #include <transmission_interface/simple_transmission.h>
 #include <transmission_interface/transmission_interface.h>
-
-#include <ros/ros.h>
 
 #include <dynamixel_workbench_toolbox/dynamixel_multi_driver.h>
 
@@ -54,7 +56,9 @@ public:
 
 private:
   bool loadDynamixels(ros::NodeHandle& nh);
+
   void setTorque(bool enabled);
+  void setTorque(std_msgs::BoolConstPtr enabled);
 
   bool first_cycle_;
 
@@ -74,6 +78,9 @@ private:
   std::vector<double> current_position_;
   std::vector<double> current_velocity_;
   std::vector<double> current_effort_;
+
+  // subscriber
+  ros::Subscriber set_torque_sub_;
 };
 }
 

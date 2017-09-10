@@ -7,11 +7,15 @@ DynamixelHardwareInterface::DynamixelHardwareInterface()
 
 bool DynamixelHardwareInterface::init(ros::NodeHandle& nh)
 {
+  // init subsriber
+  set_torque_sub_ = nh.subscribe<std_msgs::BoolConstPtr>("set_torque", 1, &DynamixelHardwareInterface::setTorque, this);
+
   // Load dynamixel config from parameter server
   if (!loadDynamixels(nh)) {
     ROS_ERROR_STREAM("Failed to ping all motors.");
     return false;
   }
+
   // initialize sync read/write
   driver_->initSyncRead();
   driver_->initSyncWrite();
@@ -37,7 +41,7 @@ bool DynamixelHardwareInterface::init(ros::NodeHandle& nh)
   registerInterface(&jnt_state_interface);
   registerInterface(&jnt_pos_interface);
 
-  setTorque(true);
+  setTorque(nh.param("auto_torque", false));
   return true;
 }
 
@@ -92,6 +96,11 @@ void DynamixelHardwareInterface::setTorque(bool enabled)
 {
   std::vector<uint8_t> torque(joint_names_.size(), enabled);
   driver_->syncWriteTorque(torque);
+}
+
+void DynamixelHardwareInterface::setTorque(std_msgs::BoolConstPtr enabled)
+{
+  setTorque(enabled->data);
 }
 
 void DynamixelHardwareInterface::read()
