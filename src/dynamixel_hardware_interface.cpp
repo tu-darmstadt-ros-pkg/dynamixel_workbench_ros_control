@@ -71,10 +71,15 @@ bool DynamixelHardwareInterface::loadDynamixels(ros::NodeHandle& nh)
     joint_names_.push_back(dxl_name);
     ros::NodeHandle dxl_nh(nh, "dynamixels/device_info/" + dxl_name);
 
+    joint_mounting_offsets_.push_back(dxl_nh.param("mounting_offset", 0.0));
+    joint_offsets_.push_back(dxl_nh.param("offset", 0.0));
+
     dynamixel_driver::DynamixelInfo * info = new dynamixel_driver::DynamixelInfo;
+
     int model_id;
     dxl_nh.getParam("id", model_id);
     info->model_id = model_id;
+
     int model_number;
     dxl_nh.getParam("model_number", model_number);
     info->model_number = model_number;
@@ -105,7 +110,13 @@ void DynamixelHardwareInterface::setTorque(std_msgs::BoolConstPtr enabled)
 
 void DynamixelHardwareInterface::read()
 {
-  driver_->syncReadPosition(current_position_);
+  current_position_.clear();
+  if (!driver_->syncReadPosition(current_position_))
+    ROS_ERROR_THROTTLE(1.0, "Couldn't read current joint position!");
+
+  for (size_t num = 0; num < joint_names_.size(); num++)
+    current_position_[num] += joint_mounting_offsets_[num] + joint_offsets_[num];
+
   if (first_cycle_)
   {
     goal_position_ = current_position_;
@@ -113,10 +124,16 @@ void DynamixelHardwareInterface::read()
   }
   //  driver_->readMultiRegister("present_current");
   //  ROS_INFO_STREAM("Current: " << vecToString(*driver_->read_value_["present_current"]));
+  //  ROS_INFO_STREAM("Current: " << vecToString(current_position_));
 }
 
 void DynamixelHardwareInterface::write()
 {
-  driver_->syncWritePosition(goal_position_);
+  std::vector<double> goal_position;
+
+  for (size_t num = 0; num < joint_names_.size(); num++)
+    goal_position.push_back(goal_position_[num] - joint_mounting_offsets_[num] - joint_offsets_[num]);
+
+  driver_->syncWritePosition(goal_position);
 }
 }

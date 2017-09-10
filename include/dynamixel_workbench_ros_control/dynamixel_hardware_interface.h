@@ -70,6 +70,8 @@ private:
   int joint_count_;
 
   std::vector<std::string> joint_names_;
+  std::vector<double> joint_mounting_offsets_;
+  std::vector<double> joint_offsets_;
 
   std::vector<double> goal_position_;
   std::vector<double> goal_effort_;
