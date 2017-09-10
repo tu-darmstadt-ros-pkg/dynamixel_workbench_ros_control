@@ -11,10 +11,11 @@
 
 #include <dynamixel_workbench_toolbox/dynamixel_multi_driver.h>
 
-namespace dynamixel_workbench_ros_control {
-
+namespace dynamixel_workbench_ros_control
+{
 template<typename T>
-std::string vecToString(const std::vector<T>& vec) {
+std::string vecToString(const std::vector<T>& vec)
+{
   std::stringstream ss;
   ss << "[";
   for (unsigned int i = 0; i < vec.size(); ++i) {
@@ -27,14 +28,16 @@ std::string vecToString(const std::vector<T>& vec) {
   return ss.str();
 }
 
-struct State {
+struct State
+{
   State() : position(0), velocity(0), effort(0) {}
   double position;
   double velocity;
   double effort;
 };
 
-struct Joint {
+struct Joint
+{
   std::string name;
   State current;
   State goal;
@@ -72,9 +75,6 @@ private:
   std::vector<double> current_velocity_;
   std::vector<double> current_effort_;
 };
-
 }
-
-
 
 #endif

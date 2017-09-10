@@ -9,7 +9,8 @@ int main(int argc, char** argv)
 
   // Load dynamixels
   dynamixel_workbench_ros_control::DynamixelHardwareInterface hw;
-  if (!hw.init(pnh)) {
+  if (!hw.init(pnh))
+  {
     ROS_ERROR_STREAM("Failed to initialize hardware interface.");
     return 1;
   }

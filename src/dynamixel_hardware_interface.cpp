@@ -1,12 +1,12 @@
 #include <dynamixel_workbench_ros_control/dynamixel_hardware_interface.h>
 
-namespace dynamixel_workbench_ros_control {
-
-
+namespace dynamixel_workbench_ros_control
+{
 DynamixelHardwareInterface::DynamixelHardwareInterface()
   : first_cycle_(true) {}
 
-bool DynamixelHardwareInterface::init(ros::NodeHandle& nh) {
+bool DynamixelHardwareInterface::init(ros::NodeHandle& nh)
+{
   // Load dynamixel config from parameter server
   if (!loadDynamixels(nh)) {
     ROS_ERROR_STREAM("Failed to ping all motors.");
@@ -26,7 +26,8 @@ bool DynamixelHardwareInterface::init(ros::NodeHandle& nh) {
 
   // register interfaces
   // connect and register the joint state interface
-  for (unsigned int i = 0; i < joint_names_.size(); i++) {
+  for (unsigned int i = 0; i < joint_names_.size(); i++)
+  {
     hardware_interface::JointStateHandle state_handle(joint_names_[i], &current_position_[i], &current_velocity_[i], &current_effort_[i]);
     jnt_state_interface.registerHandle(state_handle);
 
@@ -40,7 +41,8 @@ bool DynamixelHardwareInterface::init(ros::NodeHandle& nh) {
   return true;
 }
 
-bool DynamixelHardwareInterface::loadDynamixels(ros::NodeHandle& nh) {
+bool DynamixelHardwareInterface::loadDynamixels(ros::NodeHandle& nh)
+{
   bool success = true;
 
   ROS_INFO_STREAM("Loading parameters from namespace " << nh.getNamespace() + "/dynamixels");
@@ -59,7 +61,8 @@ bool DynamixelHardwareInterface::loadDynamixels(ros::NodeHandle& nh) {
   XmlRpc::XmlRpcValue dxls;
   nh.getParam("dynamixels/device_info", dxls);
   ROS_ASSERT(dxls.getType() == XmlRpc::XmlRpcValue::TypeStruct);
-  for(XmlRpc::XmlRpcValue::ValueStruct::const_iterator it = dxls.begin(); it != dxls.end(); ++it) {
+  for(XmlRpc::XmlRpcValue::ValueStruct::const_iterator it = dxls.begin(); it != dxls.end(); ++it)
+  {
     std::string dxl_name = (std::string)(it->first);
     joint_names_.push_back(dxl_name);
     ros::NodeHandle dxl_nh(nh, "dynamixels/device_info/" + dxl_name);
@@ -77,29 +80,34 @@ bool DynamixelHardwareInterface::loadDynamixels(ros::NodeHandle& nh) {
   // load into driver and clean up
   success &= driver_->loadDynamixel(infos);
 
-  for (unsigned int i = 0; i < infos.size(); i++) {
+  for (unsigned int i = 0; i < infos.size(); i++)
+  {
     delete infos[i];
   }
 
   return success;
 }
 
-void DynamixelHardwareInterface::setTorque(bool enabled) {
+void DynamixelHardwareInterface::setTorque(bool enabled)
+{
   std::vector<uint8_t> torque(joint_names_.size(), enabled);
   driver_->syncWriteTorque(torque);
 }
 
-void DynamixelHardwareInterface::read() {
+void DynamixelHardwareInterface::read()
+{
   driver_->syncReadPosition(current_position_);
-  if (first_cycle_) {
+  if (first_cycle_)
+  {
     goal_position_ = current_position_;
     first_cycle_ = false;
   }
-//  driver_->readMultiRegister("present_current");
-//  ROS_INFO_STREAM("Current: " << vecToString(*driver_->read_value_["present_current"]));
+  //  driver_->readMultiRegister("present_current");
+  //  ROS_INFO_STREAM("Current: " << vecToString(*driver_->read_value_["present_current"]));
 }
 
-void DynamixelHardwareInterface::write() {
+void DynamixelHardwareInterface::write()
+{
   driver_->syncWritePosition(goal_position_);
 }
 }
