@@ -110,12 +110,13 @@ void DynamixelHardwareInterface::setTorque(std_msgs::BoolConstPtr enabled)
 
 void DynamixelHardwareInterface::read()
 {
-  current_position_.clear();
-  if (!driver_->syncReadPosition(current_position_))
+  if (driver_->syncReadPosition(current_position_))
+  {
+    for (size_t num = 0; num < joint_names_.size(); num++)
+      current_position_[num] += joint_mounting_offsets_[num] + joint_offsets_[num];
+  }
+  else
     ROS_ERROR_THROTTLE(1.0, "Couldn't read current joint position!");
-
-  for (size_t num = 0; num < joint_names_.size(); num++)
-    current_position_[num] += joint_mounting_offsets_[num] + joint_offsets_[num];
 
   if (first_cycle_)
   {
