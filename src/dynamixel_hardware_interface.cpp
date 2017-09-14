@@ -190,7 +190,7 @@ void DynamixelHardwareInterface::write()
     driver_->syncWriteVelocity(goal_velocity_);
   } else if (control_mode_ == EffortControl)
   {
-    driver_->syncWriteEffort(goal_effort_);
+    driver_->syncWriteCurrent(goal_effort_);
   }
 }
 
