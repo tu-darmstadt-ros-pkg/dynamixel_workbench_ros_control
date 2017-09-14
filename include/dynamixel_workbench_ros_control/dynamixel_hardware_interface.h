@@ -45,6 +45,12 @@ struct Joint
   State goal;
 };
 
+enum ControlMode {
+  PositionControl,
+  VelocityControl,
+  EffortControl
+};
+
 class DynamixelHardwareInterface : public hardware_interface::RobotHW
 {
 public:
@@ -56,6 +62,8 @@ public:
 
 private:
   bool loadDynamixels(ros::NodeHandle& nh);
+  bool stringToControlMode(std::string control_mode_str, ControlMode &control_mode);
+  bool switchDynamixelControlMode();
 
   void setTorque(bool enabled);
   void setTorque(std_msgs::BoolConstPtr enabled);
@@ -64,8 +72,13 @@ private:
 
   boost::shared_ptr<dynamixel_multi_driver::DynamixelMultiDriver> driver_;
 
-  hardware_interface::JointStateInterface jnt_state_interface;
-  hardware_interface::PositionJointInterface jnt_pos_interface;
+  hardware_interface::JointStateInterface jnt_state_interface_;
+
+  hardware_interface::PositionJointInterface jnt_pos_interface_;
+  hardware_interface::VelocityJointInterface jnt_vel_interface_;
+  hardware_interface::EffortJointInterface jnt_eff_interface_;
+
+  ControlMode control_mode_;
 
   int joint_count_;
 
@@ -77,6 +90,9 @@ private:
   std::vector<double> goal_effort_;
   std::vector<double> goal_velocity_;
 
+  bool read_position_;
+  bool read_velocity_;
+  bool read_effort_;
   std::vector<double> current_position_;
   std::vector<double> current_velocity_;
   std::vector<double> current_effort_;
