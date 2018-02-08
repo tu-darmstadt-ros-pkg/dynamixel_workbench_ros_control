@@ -12,7 +12,7 @@ int main(int argc, char** argv)
   if (!hw.init(pnh))
   {
     ROS_ERROR_STREAM("Failed to initialize hardware interface.");
-    return 1;
+    return 0;
   }
 
   // Create separate queue, because otherwise CM will freeze
