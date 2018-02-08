@@ -1,8 +1,11 @@
 dynamixels:
   port_info:
-    port_name: /dev/rs485_extern
+    port_name: /dev/ttyUSB0
     baudrate: 3000000
     protocol_version: 2
+  control_mode: position
+  read_values:
+    read_position: true
   device_info:
     gripper_roll_joint:
       id: 0
