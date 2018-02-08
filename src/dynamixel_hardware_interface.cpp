@@ -15,7 +15,6 @@ bool DynamixelHardwareInterface::init(ros::NodeHandle& nh)
   // Load dynamixel config from parameter server
   if (!loadDynamixels(nh))
   {
-    ROS_ERROR_STREAM("Failed to ping all motors.");
     return false;
   }
 
@@ -126,6 +125,10 @@ bool DynamixelHardwareInterface::loadDynamixels(ros::NodeHandle& nh)
   for (unsigned int i = 0; i < infos.size(); i++)
   {
     delete infos[i];
+  }
+
+  if (!success) {
+    ROS_ERROR_STREAM("Failed to ping all motors.");
   }
 
   return success;
