@@ -2,7 +2,7 @@
 <launch>
   <node pkg="dynamixel_workbench_ros_control" type="dynamixel_controller_manager_node" name="gripper_control" output="screen">
     <param name="control_cycle_hz" value="25" />
-    
+    <param name="auto_torque" value="true" />    
     <rosparam file="$(find dynamixel_workbench_ros_control)/config/gripper.yaml" command="load" />
   </node>
 </launch>
