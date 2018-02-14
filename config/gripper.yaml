@@ -13,6 +13,7 @@ dynamixels:
     gripper_finger_servo_joint:
       id: 1
       model_number: 1020
+      mounting_offset: -1.5
 
   
       
