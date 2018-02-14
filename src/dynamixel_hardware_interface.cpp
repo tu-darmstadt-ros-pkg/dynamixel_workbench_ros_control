@@ -136,6 +136,11 @@ bool DynamixelHardwareInterface::loadDynamixels(ros::NodeHandle& nh)
 
 void DynamixelHardwareInterface::setTorque(bool enabled)
 {
+  if (enabled) {
+    ROS_INFO_STREAM("Enabling torque.");
+  } else {
+    ROS_INFO_STREAM("Disabling torque.");
+  }
   std::vector<uint8_t> torque(joint_names_.size(), enabled);
   driver_->syncWriteTorque(torque);
 }
