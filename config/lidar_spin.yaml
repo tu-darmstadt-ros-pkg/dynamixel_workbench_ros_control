@@ -1,0 +1,16 @@
+dynamixels:
+  port_info:
+    port_name: /dev/ttyUSB0
+    baudrate: 3000000
+    protocol_version: 2
+  control_mode: velocity
+  read_values:
+    read_position: true
+  device_info:
+    spin_lidar_spin_joint:
+      id: 0
+      model_number: 29
+
+  
+      
+  

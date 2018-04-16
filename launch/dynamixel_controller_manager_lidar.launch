@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+  <node pkg="dynamixel_workbench_ros_control" type="dynamixel_controller_manager_node" name="spin_lidar_control" output="screen" respawn="true">
+    <param name="control_cycle_hz" value="25" />
+    <param name="auto_torque" value="true" />    
+    <rosparam file="$(find dynamixel_workbench_ros_control)/config/lidar_spin.yaml" command="load" />
+  </node>
+</launch>
