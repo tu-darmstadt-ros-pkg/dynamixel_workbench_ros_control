@@ -1,6 +1,6 @@
 dynamixels:
   port_info:
-    port_name: /dev/ttyUSB0
+    port_name: /dev/ttyUSB_lidarbase
     baudrate: 3000000
     protocol_version: 2
   control_mode: velocity
