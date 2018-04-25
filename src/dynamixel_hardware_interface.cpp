@@ -1,5 +1,9 @@
 #include <dynamixel_workbench_ros_control/dynamixel_hardware_interface.h>
 
+#include <dynamixel_workbench_ros_control/timing.h>
+
+INIT_TIMING
+
 namespace dynamixel_workbench_ros_control
 {
 
@@ -7,8 +11,14 @@ DynamixelHardwareInterface::DynamixelHardwareInterface()
   : first_cycle_(true), read_position_(true), read_velocity_(false), read_effort_(false)
 {}
 
+DynamixelHardwareInterface::~DynamixelHardwareInterface()
+{
+  timing::Timing::printTimeInfos();
+}
+
 bool DynamixelHardwareInterface::init(ros::NodeHandle& nh)
 {
+  START_TIMING("init");
   // Init subscriber
   set_torque_sub_ = nh.subscribe<std_msgs::BoolConstPtr>("set_torque", 1, &DynamixelHardwareInterface::setTorque, this);
 
@@ -62,6 +72,7 @@ bool DynamixelHardwareInterface::init(ros::NodeHandle& nh)
   }
 
   setTorque(nh.param("auto_torque", false));
+  STOP_TIMING_AVG;
   return true;
 }
 
@@ -152,6 +163,7 @@ void DynamixelHardwareInterface::setTorque(std_msgs::BoolConstPtr enabled)
 
 void DynamixelHardwareInterface::read()
 {
+  START_TIMING("read");
   if (read_position_)
   {
     if (driver_->syncReadPosition(current_position_))
@@ -183,10 +195,12 @@ void DynamixelHardwareInterface::read()
     goal_position_ = current_position_;
     first_cycle_ = false;
   }
+  STOP_TIMING_AVG;
 }
 
 void DynamixelHardwareInterface::write()
 {
+  START_TIMING("write");
   if (control_mode_ == PositionControl)
   {
     std::vector<double> goal_position(joint_names_.size());
@@ -200,6 +214,7 @@ void DynamixelHardwareInterface::write()
   {
     driver_->syncWriteCurrent(goal_effort_);
   }
+  STOP_TIMING_AVG;
 }
 
 bool DynamixelHardwareInterface::stringToControlMode(std::string control_mode_str, ControlMode& control_mode)

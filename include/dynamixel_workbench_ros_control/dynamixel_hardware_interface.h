@@ -55,6 +55,7 @@ class DynamixelHardwareInterface : public hardware_interface::RobotHW
 {
 public:
   DynamixelHardwareInterface();
+  ~DynamixelHardwareInterface();
 
   bool init(ros::NodeHandle& nh);
   void read();
