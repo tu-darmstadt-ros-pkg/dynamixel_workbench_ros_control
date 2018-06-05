@@ -69,6 +69,8 @@ private:
   void setTorque(bool enabled);
   void setTorque(std_msgs::BoolConstPtr enabled);
 
+  bool debug_;
+
   bool first_cycle_;
 
   boost::shared_ptr<dynamixel_multi_driver::DynamixelMultiDriver> driver_;

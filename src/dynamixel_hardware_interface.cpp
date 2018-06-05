@@ -1,6 +1,7 @@
 #include <dynamixel_workbench_ros_control/dynamixel_hardware_interface.h>
 
 #include <dynamixel_workbench_ros_control/timing.h>
+#include <sstream>
 
 INIT_TIMING
 
@@ -8,7 +9,7 @@ namespace dynamixel_workbench_ros_control
 {
 
 DynamixelHardwareInterface::DynamixelHardwareInterface()
-  : first_cycle_(true), read_position_(true), read_velocity_(false), read_effort_(false)
+  : first_cycle_(true), read_position_(true), read_velocity_(false), read_effort_(false), debug_(false)
 {}
 
 DynamixelHardwareInterface::~DynamixelHardwareInterface()
@@ -19,6 +20,12 @@ DynamixelHardwareInterface::~DynamixelHardwareInterface()
 bool DynamixelHardwareInterface::init(ros::NodeHandle& nh)
 {
   START_TIMING("init");
+  nh.param<bool>("debug", debug_, false);
+  if (debug_) {
+    if (ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug)) {
+      ros::console::notifyLoggerLevelsChanged();
+    }
+  }
   // Init subscriber
   set_torque_sub_ = nh.subscribe<std_msgs::BoolConstPtr>("set_torque", 1, &DynamixelHardwareInterface::setTorque, this);
 
@@ -71,7 +78,9 @@ bool DynamixelHardwareInterface::init(ros::NodeHandle& nh)
     registerInterface(&jnt_eff_interface_);
   }
 
-  setTorque(nh.param("auto_torque", false));
+  if (nh.param("auto_torque", false)) {
+    setTorque(true);
+  }
   STOP_TIMING_AVG;
   return true;
 }
@@ -127,6 +136,14 @@ bool DynamixelHardwareInterface::loadDynamixels(ros::NodeHandle& nh)
     int model_number;
     dxl_nh.getParam("model_number", model_number);
     info->model_number = model_number;
+
+    std::stringstream ss;
+    ss << "Loaded dynamixel:" << std::endl;
+    ss << "-- name: " << dxl_name << std::endl;
+    ss << "-- id: " << static_cast<int>(info->model_id) << std::endl;
+    ss << "-- model number: " << info->model_number << std::endl;
+
+    ROS_DEBUG_STREAM(ss.str());
     infos.push_back(info);
   }
 
