@@ -1,0 +1,31 @@
+dynamixels:
+  port_info:
+    port_name: /dev/ttyUSB0
+    baudrate: 3000000
+    protocol_version: 2
+  control_mode: position
+  read_values:
+    read_position: true
+  device_info:
+    arm_yaw_joint:
+      id: 1
+      model_number: 1020
+    arm_pitch_joint_0:
+      id: 2
+      model_number: 1120
+    arm_pitch_joint_1:
+      id: 3
+      model_number: 1020
+    arm_pitch_joint_2:
+      id: 4
+      model_number: 1020
+    arm_roll_joint:
+      id: 5
+      model_number: 1020
+    gripper_servo_joint:
+      id: 6
+      model_number: 1020
+
+  
+      
+  
