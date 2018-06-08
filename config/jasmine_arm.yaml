@@ -1,7 +1,7 @@
 dynamixels:
   port_info:
-    port_name: /dev/ttyUSB0
-    baudrate: 3000000
+    port_name: /dev/ttyUSB_manipulator_arm
+    baudrate: 1000000
     protocol_version: 2
   control_mode: position
   read_values:
