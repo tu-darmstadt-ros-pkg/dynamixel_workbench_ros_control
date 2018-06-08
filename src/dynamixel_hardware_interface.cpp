@@ -14,6 +14,9 @@ DynamixelHardwareInterface::DynamixelHardwareInterface()
 
 DynamixelHardwareInterface::~DynamixelHardwareInterface()
 {
+  if (torque_off_on_shutdown_) {
+    setTorque(false);
+  }
   timing::Timing::printTimeInfos();
 }
 
@@ -81,6 +84,7 @@ bool DynamixelHardwareInterface::init(ros::NodeHandle& nh)
   if (nh.param("auto_torque", false)) {
     setTorque(true);
   }
+  nh.param("torque_off_on_shutdown", torque_off_on_shutdown_, false);
   STOP_TIMING_AVG;
   return true;
 }
