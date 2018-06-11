@@ -82,6 +82,7 @@ private:
   hardware_interface::EffortJointInterface jnt_eff_interface_;
 
   ControlMode control_mode_;
+  bool torque_off_on_shutdown_;
 
   int joint_count_;
 
